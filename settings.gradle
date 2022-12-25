@@ -12,8 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Jetpack"
+rootProject.name = "HemaCare"
 include(":app")
 include(":core")
 include(":network")
-include(":ble")
