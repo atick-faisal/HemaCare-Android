@@ -12,14 +12,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.atick.jetpack.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination
-@RootNavGraph(start = true)
+//@RootNavGraph(start = true)
 fun IdScreen(
     navigator: DestinationsNavigator
 ) {
