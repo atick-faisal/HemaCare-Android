@@ -13,6 +13,7 @@ buildscript {
 
         // ... Core
         core_ktx_version = "1.9.0"
+        app_compat_version = "1.5.1"
         coroutines_version = "1.6.4"
         activity_version = "1.6.1"
         timber_version = "5.0.1"
@@ -27,6 +28,7 @@ buildscript {
         activity_compose_version = "1.6.1"
         lifecycle_version = "2.5.1"
         nav_version = "1.7.27-beta"
+        lottie_version = "5.2.0"
         hilt_version = "2.44.2"
         splash_screen_version = "1.0.0"
 
