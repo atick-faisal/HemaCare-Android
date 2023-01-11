@@ -127,6 +127,9 @@ dependencies {
     // ... Lottie
     implementation("com.airbnb.android:lottie:$lottie_version")
 
+    // ... Smart Care
+    implementation files("libs/scolib-2.1.0.aar")
+
     // ... Dagger-Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
