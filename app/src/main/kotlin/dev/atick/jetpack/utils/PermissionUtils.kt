@@ -45,7 +45,9 @@ class PermissionUtils @Inject constructor(
     fun setupBluetooth(activity: ComponentActivity) {
         if (bluetoothAdapter == null) activity.finishAffinity()
         // showPermissionRationale(activity)
-        askForPermissions()
+        if (!isAllPermissionsProvided(activity)) {
+            askForPermissions()
+        }
     }
 
     private fun enableBluetooth() {

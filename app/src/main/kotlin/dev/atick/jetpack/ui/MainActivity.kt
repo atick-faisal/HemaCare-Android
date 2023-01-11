@@ -17,12 +17,14 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var permissionUtils: PermissionUtils
 
+    private var i = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             JetpackTheme {
-                 DestinationsNavHost(navGraph = NavGraphs.root)
+                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
 
@@ -32,7 +34,8 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onResume() {
-        super.onResume()
         permissionUtils.setupBluetooth(this)
+        super.onResume()
+        Timber.i("ON RESUME CALLED ${i++}")
     }
 }

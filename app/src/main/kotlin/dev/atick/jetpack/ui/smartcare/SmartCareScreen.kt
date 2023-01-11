@@ -8,6 +8,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -15,19 +17,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.LottieAnimationView
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.atick.jetpack.R
+import dev.atick.jetpack.ui.MainViewModel
 
 
 @Composable
 @Destination
-@RootNavGraph(start = true)
+//@RootNavGraph(start = true)
 fun SmartCareScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    val smartCareUiState by viewModel.smartCareUiState.collectAsState()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -85,8 +92,21 @@ fun SmartCareScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Record")
+            Text(
+                text = smartCareUiState.smartCareState.description,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(onClick = { viewModel.toggleConnection() }) {
+                Text(
+                    text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
+                        "Next"
+                    else if (smartCareUiState.smartCareState != SmartCareState.Disconnected)
+                        "Cancel"
+                    else "Record"
+                )
             }
         }
 
