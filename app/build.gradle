@@ -16,6 +16,7 @@ android {
     defaultConfig {
         applicationId "dev.atick.hema.care"
         minSdk rootProject.ext.min_sdk_version
+        targetSdk rootProject.ext.compile_sdk_version
         versionCode rootProject.ext.version_code
         versionName rootProject.ext.version_name
     }
