@@ -12,8 +12,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import dev.atick.jetpack.R
+import dev.atick.jetpack.ui.destinations.IdScreenDestination
+import dev.atick.jetpack.ui.destinations.ImageSelectionScreenDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +52,11 @@ fun IdScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { navigator.navigate(ImageSelectionScreenDestination) {
+                popUpTo(IdScreenDestination) {
+                    inclusive = false
+                }
+            } }) {
                 Text(text = "Next")
             }
         }

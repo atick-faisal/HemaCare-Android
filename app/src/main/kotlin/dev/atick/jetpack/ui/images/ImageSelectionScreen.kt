@@ -26,16 +26,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import dev.atick.jetpack.R
 import dev.atick.jetpack.ui.MainViewModel
+import dev.atick.jetpack.ui.destinations.IdScreenDestination
+import dev.atick.jetpack.ui.destinations.SmartCareScreenDestination
 import timber.log.Timber
 import java.io.File
 
 @Composable
 @Destination
-@RootNavGraph(start = true)
 fun ImageSelectionScreen(
     navigator: DestinationsNavigator,
     viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
@@ -101,7 +102,11 @@ fun ImageSelectionScreen(
                         )
                     )
                 } else {
-                    Unit
+                     navigator.navigate(SmartCareScreenDestination) {
+                         popUpTo(IdScreenDestination) {
+                             inclusive = false
+                         }
+                     }
                 }
             }) {
                 Text(text = if (nSelectedImages == 0) "Open Gallery" else "Next")
