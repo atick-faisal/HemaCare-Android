@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import dev.atick.jetpack.ui.id.NavGraphs
 import dev.atick.jetpack.ui.theme.JetpackTheme
 
 @AndroidEntryPoint
@@ -16,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackTheme {
-                DestinationsNavHost(navGraph = NavGraphs.root)
+                 DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
     }
