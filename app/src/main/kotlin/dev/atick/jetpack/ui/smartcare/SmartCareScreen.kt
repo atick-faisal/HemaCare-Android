@@ -1,8 +1,6 @@
 package dev.atick.jetpack.ui.smartcare
 
 import android.animation.ValueAnimator
-import android.view.View
-import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
