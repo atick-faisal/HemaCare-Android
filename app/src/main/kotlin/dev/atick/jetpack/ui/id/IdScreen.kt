@@ -75,8 +75,8 @@ fun IdScreen(
 
         Image(
             modifier = Modifier
-                .width(240.dp)
-                .height(360.dp)
+                .width(200.dp)
+                .height(300.dp)
                 .align(Alignment.BottomEnd),
             painter = painterResource(id = R.drawable.plant),
             contentDescription = "plant"
