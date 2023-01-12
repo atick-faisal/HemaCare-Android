@@ -21,8 +21,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.LottieAnimationView
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import dev.atick.jetpack.R
 import dev.atick.jetpack.ui.MainViewModel
+import dev.atick.jetpack.ui.destinations.IdScreenDestination
+import dev.atick.jetpack.ui.destinations.UploadScreenDestination
 
 
 @Composable
@@ -99,14 +102,24 @@ fun SmartCareScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = { viewModel.toggleConnection() }) {
-                Text(
-                    text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
-                        "Next"
-                    else if (smartCareUiState.smartCareState != SmartCareState.Disconnected)
-                        "Cancel"
-                    else "Record"
-                )
+//            Button(onClick = { viewModel.toggleConnection() }) {
+//                Text(
+//                    text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
+//                        "Next"
+//                    else if (smartCareUiState.smartCareState != SmartCareState.Disconnected)
+//                        "Cancel"
+//                    else "Record"
+//                )
+//            }
+
+            Button(onClick = {
+                navigator.navigate(UploadScreenDestination) {
+                    popUpTo(IdScreenDestination) {
+                        inclusive = false
+                    }
+                }
+            }) {
+                Text(text = "Next")
             }
         }
 
