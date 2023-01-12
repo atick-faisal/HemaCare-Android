@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.popUpTo
@@ -39,10 +40,10 @@ import java.io.File
 @Destination
 fun ImageSelectionScreen(
     navigator: DestinationsNavigator,
-    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
 
-    val nSelectedImages by viewModel.nSelectedImages.collectAsState()
+    val imageSelectionUiState by viewModel.imageSelectionUiState.collectAsState()
 
     val context = LocalContext.current
     val images = remember { mutableStateListOf<Bitmap>() }
@@ -83,7 +84,7 @@ fun ImageSelectionScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            AnimatedVisibility(visible = nSelectedImages != 0) {
+            AnimatedVisibility(visible = imageSelectionUiState.imageUris.isNotEmpty()) {
                 LazyRow(Modifier.height(200.dp)) {
                     items(images) { image ->
                         Image(bitmap = image.asImageBitmap(), contentDescription = "Image")
@@ -95,21 +96,25 @@ fun ImageSelectionScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = {
-                if (nSelectedImages == 0) {
+                if (imageSelectionUiState.imageUris.isNotEmpty()) {
                     launcher.launch(
                         PickVisualMediaRequest(
                             ActivityResultContracts.PickVisualMedia.ImageOnly
                         )
                     )
                 } else {
-                     navigator.navigate(SmartCareScreenDestination) {
-                         popUpTo(IdScreenDestination) {
-                             inclusive = false
-                         }
-                     }
+                    navigator.navigate(SmartCareScreenDestination) {
+                        popUpTo(IdScreenDestination) {
+                            inclusive = false
+                        }
+                    }
                 }
             }) {
-                Text(text = if (nSelectedImages == 0) "Open Gallery" else "Next")
+                Text(
+                    text = if (imageSelectionUiState.imageUris.isNotEmpty())
+                        "Open Gallery"
+                    else "Next"
+                )
             }
         }
 

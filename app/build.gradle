@@ -119,6 +119,7 @@ dependencies {
 
     // ... Navigation
     implementation("io.github.raamcosta.compose-destinations:core:$nav_version")
+    implementation("androidx.hilt:hilt-navigation-compose:$hilt_nav_version")
     ksp("io.github.raamcosta.compose-destinations:ksp:$nav_version")
 
     // ... Splash Screen
@@ -126,6 +127,9 @@ dependencies {
 
     // ... Lottie
     implementation("com.airbnb.android:lottie:$lottie_version")
+
+    // ... Smart Care
+    implementation files("libs/scolib-2.1.0.aar")
 
     // ... Dagger-Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
