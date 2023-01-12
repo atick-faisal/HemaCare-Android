@@ -7,6 +7,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -18,6 +20,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.atick.jetpack.R
 import dev.atick.jetpack.ui.MainViewModel
+import dev.atick.jetpack.ui.destinations.IdScreenDestination
 
 @Composable
 @Destination
@@ -25,6 +28,9 @@ fun UploadScreen(
     navigator: DestinationsNavigator,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    val uploadUiState by viewModel.uploadUiState.collectAsState()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -42,18 +48,26 @@ fun UploadScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "5 Images Selected, 1 Data Recorded",
+                text = "${uploadUiState.nSelectedImages} Images Selected," +
+                    " ${uploadUiState.nRecordedFiles} Data Recorded",
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    if (uploadUiState.uploadState == UploadState.Idle) {
+                        viewModel.upload()
+                    } else {
+                        navigator.navigate(IdScreenDestination)
+                    }
+                },
+                enabled = uploadUiState.uploadState != UploadState.Uploading
             ) {
                 Icon(Icons.Default.Upload, contentDescription = "Upload")
                 Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = "Upload")
+                Text(text = uploadUiState.uploadState.description)
             }
         }
 

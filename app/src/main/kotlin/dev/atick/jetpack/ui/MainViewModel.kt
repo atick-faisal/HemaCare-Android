@@ -6,6 +6,7 @@ import android.os.Environment
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.smartcare.oximetry.library.ConnectionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,10 +15,14 @@ import dev.atick.jetpack.ui.id.IdUiState
 import dev.atick.jetpack.ui.images.ImageSelectionUiState
 import dev.atick.jetpack.ui.smartcare.SmartCareState
 import dev.atick.jetpack.ui.smartcare.SmartCareUiState
+import dev.atick.jetpack.ui.upload.UploadState
+import dev.atick.jetpack.ui.upload.UploadUiState
 import dev.atick.jetpack.utils.toCsv
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -25,10 +30,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.BlockingQueue
-import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,6 +38,10 @@ class MainViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val executor: ThreadPoolExecutor
 ) : ViewModel() {
+
+    init {
+        Timber.d("VM INITIALIZED")
+    }
 
     companion object {
         private const val RECORDING_DURATION = 3 // MINUTES
@@ -54,6 +60,10 @@ class MainViewModel @Inject constructor(
     private val _smartCareUiState = MutableStateFlow(SmartCareUiState())
     val smartCareUiState: StateFlow<SmartCareUiState>
         get() = _smartCareUiState
+
+    private val _uploadUiState = MutableStateFlow(UploadUiState())
+    val uploadUiState: StateFlow<UploadUiState>
+        get() = _uploadUiState
 
     private val recording = mutableListOf<OxiMeterData>()
 
@@ -96,7 +106,7 @@ class MainViewModel @Inject constructor(
         true
     }
 
-     private val connectionManager = ConnectionManager(context, handler)
+    private val connectionManager = ConnectionManager(context, handler)
 
 
     fun setPatientId(patientId: String) {
@@ -109,6 +119,12 @@ class MainViewModel @Inject constructor(
         _imageSelectionUiState.update { state ->
             state.copy(
                 imageUris = imageUris
+            )
+        }
+
+        _uploadUiState.update { state ->
+            state.copy(
+                nSelectedImages = imageUris.size
             )
         }
     }
@@ -179,6 +195,31 @@ class MainViewModel @Inject constructor(
             fos.close()
         } catch (e: IOException) {
             e.printStackTrace()
+        }
+    }
+
+    fun upload() {
+        _uploadUiState.update { state ->
+            state.copy(
+                uploadState = UploadState.Uploading
+            )
+        }
+        viewModelScope.launch {
+            try {
+                delay(3000L)
+                _uploadUiState.update { state ->
+                    state.copy(
+                        uploadState = UploadState.UploadComplete
+                    )
+                }
+            } catch (e: Exception) {
+                _uploadUiState.update { state ->
+                    state.copy(
+                        uploadState = UploadState.Idle
+                    )
+                }
+                e.printStackTrace()
+            }
         }
     }
 

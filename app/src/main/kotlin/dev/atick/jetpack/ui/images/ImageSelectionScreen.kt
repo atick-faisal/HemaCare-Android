@@ -96,7 +96,7 @@ fun ImageSelectionScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = {
-                if (imageSelectionUiState.imageUris.isNotEmpty()) {
+                if (imageSelectionUiState.imageUris.isEmpty()) {
                     launcher.launch(
                         PickVisualMediaRequest(
                             ActivityResultContracts.PickVisualMedia.ImageOnly
@@ -111,7 +111,7 @@ fun ImageSelectionScreen(
                 }
             }) {
                 Text(
-                    text = if (imageSelectionUiState.imageUris.isNotEmpty())
+                    text = if (imageSelectionUiState.imageUris.isEmpty())
                         "Open Gallery"
                     else "Next"
                 )
