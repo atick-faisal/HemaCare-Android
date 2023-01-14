@@ -92,12 +92,7 @@ class MainViewModel @Inject constructor(
 
         if (recording.size > N_DATA_POINTS) {
             saveRecording()
-            recording.clear()
-            _smartCareUiState.update { state ->
-                state.copy(
-                    smartCareState = SmartCareState.RecordingComplete
-                )
-            }
+            disconnect()
         }
 
         _smartCareUiState.update { state ->
@@ -172,6 +167,12 @@ class MainViewModel @Inject constructor(
             Timber.d("DISCONNECTED")
             _smartCareUiState.update { state ->
                 state.copy(smartCareState = SmartCareState.Disconnected)
+            }
+            recording.clear()
+            _smartCareUiState.update { state ->
+                state.copy(
+                    smartCareState = SmartCareState.RecordingComplete
+                )
             }
         }
     }
