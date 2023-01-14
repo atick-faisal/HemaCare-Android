@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     id("com.google.devtools.ksp") version "1.7.20-1.0.8"
 }
 
@@ -132,6 +134,11 @@ dependencies {
 
     // ... Smart Care
     implementation files("libs/scolib-2.1.0.aar")
+
+    // ... Google Analytics
+    implementation platform("com.google.firebase:firebase-bom:$analytics_version")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     // ... Dagger-Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
