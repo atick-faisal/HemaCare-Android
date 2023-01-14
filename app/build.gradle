@@ -93,6 +93,7 @@ android {
 
 dependencies {
     implementation project(path: ":core")
+    implementation project(path: ":network")
 
     // ... Jetpack Compose
     implementation("androidx.compose.ui:ui")

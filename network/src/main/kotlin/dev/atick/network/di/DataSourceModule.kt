@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.atick.network.datasource.JetpackDataSource
-import dev.atick.network.datasource.JetpackDataSourceImpl
+import dev.atick.network.datasource.HemaCareDataSource
+import dev.atick.network.datasource.HemaCareDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -15,7 +15,7 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindJetpackDataSource(
-        jetpackDataSourceImpl: JetpackDataSourceImpl
-    ): JetpackDataSource
+        jetpackDataSourceImpl: HemaCareDataSourceImpl
+    ): HemaCareDataSource
 
 }
