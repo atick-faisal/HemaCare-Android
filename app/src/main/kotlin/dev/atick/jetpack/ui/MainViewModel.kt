@@ -168,11 +168,13 @@ class MainViewModel @Inject constructor(
             _smartCareUiState.update { state ->
                 state.copy(smartCareState = SmartCareState.Disconnected)
             }
-            recording.clear()
-            _smartCareUiState.update { state ->
-                state.copy(
-                    smartCareState = SmartCareState.RecordingComplete
-                )
+            if (recording.size > 0) {
+                recording.clear()
+                _smartCareUiState.update { state ->
+                    state.copy(
+                        smartCareState = SmartCareState.RecordingComplete
+                    )
+                }
             }
         }
     }
