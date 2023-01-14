@@ -26,7 +26,7 @@ buildscript {
         compose_version = "2022.10.00"
         compose_compiler_version = "1.3.2"
         activity_compose_version = "1.6.1"
-        lifecycle_version = "2.5.1"
+        lifecycle_version = "2.6.0-alpha04"
         nav_version = "1.7.27-beta"
         hilt_nav_version = "1.0.0"
         lottie_version = "5.2.0"

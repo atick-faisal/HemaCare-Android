@@ -1,8 +1,10 @@
-package dev.atick.jetpack.ui.id
+package dev.atick.jetpack.ui.upload
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,24 +17,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.popUpTo
 import dev.atick.jetpack.R
 import dev.atick.jetpack.ui.MainViewModel
 import dev.atick.jetpack.ui.destinations.IdScreenDestination
-import dev.atick.jetpack.ui.destinations.ImageSelectionScreenDestination
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination
-@RootNavGraph(start = true)
-fun IdScreen(
+fun UploadScreen(
     navigator: DestinationsNavigator,
     viewModel: MainViewModel = hiltViewModel()
 ) {
 
-    val idUiState by viewModel.idUiState.collectAsState()
+    val uploadUiState by viewModel.uploadUiState.collectAsState()
 
     Box(
         Modifier
@@ -41,7 +38,7 @@ fun IdScreen(
     ) {
         Column(Modifier.padding(32.dp)) {
             Text(
-                text = "Give the Patient an Unique ID",
+                text = "Upload Data to the HemaCare Server",
                 fontWeight = FontWeight.Thin,
                 fontSize = 56.sp,
                 lineHeight = 64.sp,
@@ -50,26 +47,27 @@ fun IdScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            TextField(
-                value = idUiState.patientId,
-                onValueChange = { viewModel.setPatientId(it) },
-                placeholder = {
-                    Text(text = "For Example: 001")
-                }
+            Text(
+                text = "${uploadUiState.nSelectedImages} Images Selected," +
+                    " ${uploadUiState.nRecordedFiles} Data Recorded",
+                color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                enabled = idUiState.patientId.isNotEmpty(),
                 onClick = {
-                    navigator.navigate(ImageSelectionScreenDestination) {
-                        popUpTo(IdScreenDestination) {
-                            inclusive = false
-                        }
+                    if (uploadUiState.uploadState == UploadState.Idle) {
+                        viewModel.upload()
+                    } else {
+                        navigator.navigate(IdScreenDestination)
                     }
-                }) {
-                Text(text = "Next")
+                },
+                enabled = uploadUiState.uploadState != UploadState.Uploading
+            ) {
+                Icon(Icons.Default.Upload, contentDescription = "Upload")
+                Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                Text(text = uploadUiState.uploadState.description)
             }
         }
 
@@ -79,7 +77,7 @@ fun IdScreen(
                 .height(300.dp)
                 .align(Alignment.BottomEnd),
             painter = painterResource(id = R.drawable.plant),
-            contentDescription = "plant"
+            contentDescription = "upload"
         )
     }
 }
