@@ -66,7 +66,7 @@ fun SmartCareScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "90.0",
+                    text = "${smartCareUiState.heartRate}",
                     fontSize = 80.sp,
                     fontWeight = FontWeight.Thin,
                     color = MaterialTheme.colorScheme.onSurface
