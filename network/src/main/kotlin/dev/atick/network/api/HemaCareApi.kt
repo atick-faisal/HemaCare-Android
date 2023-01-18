@@ -1,7 +1,6 @@
 package dev.atick.network.api
 
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -14,7 +13,7 @@ interface HemaCareApi {
     @POST("/api/smart_care/store_patient_read")
     @Multipart
     suspend fun upload(
-        @Part("id") id: RequestBody,
+        @Part id: MultipartBody.Part,
         @Part files: List<MultipartBody.Part>
     )
 }

@@ -7,7 +7,6 @@ import dev.atick.core.utils.FileUtils
 import dev.atick.network.api.HemaCareApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -24,8 +23,9 @@ class HemaCareDataSourceImpl @Inject constructor(
                 files.add(getMultiPartBody("image_${idx + 1}", uri))
             }
             files.add(getMultiPartBody("csv", recordingUri))
-            val idBody = id.toRequestBody(MultipartBody.FORM)
-            hemaCareApi.upload(idBody, files)
+
+            val idPart = MultipartBody.Part.createFormData("id", id)
+            hemaCareApi.upload(idPart, files)
             true
         } catch (e: IOException) {
             e.printStackTrace()
