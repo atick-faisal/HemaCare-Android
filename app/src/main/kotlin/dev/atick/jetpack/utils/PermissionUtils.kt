@@ -38,7 +38,7 @@ class PermissionUtils @Inject constructor(
     private fun isAllPermissionsProvided(activity: ComponentActivity): Boolean {
         return isBluetoothPermissionGranted(activity) &&
             isLocationPermissionGranted(activity) &&
-            // isStoragePermissionGranted(activity) &&
+            isStoragePermissionGranted(activity) &&
             bluetoothAdapter?.isEnabled ?: false
     }
 
@@ -57,10 +57,16 @@ class PermissionUtils @Inject constructor(
 
     private fun askForPermissions() {
         val permissions = mutableListOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            // Manifest.permission.READ_EXTERNAL_STORAGE,
-            // Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            permissions.addAll(
+                listOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             permissions.addAll(
                 listOf(
@@ -101,8 +107,10 @@ class PermissionUtils @Inject constructor(
         return context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
-//    private fun isStoragePermissionGranted(context: Context): Boolean {
-//        return context.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE) &&
-//            context.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//    }
+    private fun isStoragePermissionGranted(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            context.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE) &&
+                context.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else true
+    }
 }
