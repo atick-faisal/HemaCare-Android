@@ -107,6 +107,7 @@ class MainViewModel @Inject constructor(
 
 
     fun setPatientId(patientId: String) {
+        hemaCareRepository.setPatientId(patientId)
         _idUiState.update { state ->
             state.copy(patientId = patientId)
         }
