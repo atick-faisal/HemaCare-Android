@@ -83,22 +83,22 @@ class MainViewModel @Inject constructor(
         val spO2Status = it.data.getInt(ConnectionManager.KEY_DATA_SPO2STATUS)
         val perfusionIndex = it.data.getDouble(ConnectionManager.KEY_DATA_PERFUSIONINDEX)
 
-        recording.add(
-            OxiMeterData(
-                index, timestamp, deviceId, battery, ppgSignal,
-                heartRate, spO2, redAdc, irAdc, spO2Status, perfusionIndex
+        if (recording.size < N_DATA_POINTS) {
+            recording.add(
+                OxiMeterData(
+                    index, timestamp, deviceId, battery, ppgSignal,
+                    heartRate, spO2, redAdc, irAdc, spO2Status, perfusionIndex
+                )
             )
-        )
 
-        if (recording.size > N_DATA_POINTS) {
+            _smartCareUiState.update { state ->
+                state.copy(
+                    heartRate = heartRate
+                )
+            }
+        } else {
             saveRecording()
             disconnect()
-        }
-
-        _smartCareUiState.update { state ->
-            state.copy(
-                heartRate = heartRate
-            )
         }
 
         true
