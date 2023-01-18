@@ -102,17 +102,23 @@ fun SmartCareScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete) {
-                    navigator.navigate(UploadScreenDestination) {
-                        popUpTo(IdScreenDestination) {
-                            inclusive = false
+            Button(
+                onClick = {
+                    if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete) {
+                        navigator.navigate(UploadScreenDestination) {
+                            popUpTo(IdScreenDestination) {
+                                inclusive = false
+                            }
                         }
+                    } else if (smartCareUiState.smartCareState == SmartCareState.Connected ||
+                        smartCareUiState.smartCareState == SmartCareState.Disconnected
+                    ) {
+                        viewModel.toggleConnection()
                     }
-                } else {
-                    viewModel.toggleConnection()
-                }
-            }) {
+                },
+                enabled = !(smartCareUiState.smartCareState == SmartCareState.Connecting ||
+                    smartCareUiState.smartCareState == SmartCareState.Recording)
+            ) {
                 Text(
                     text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
                         "Next"
@@ -122,16 +128,16 @@ fun SmartCareScreen(
                 )
             }
 
-//            Button(onClick = {
-//                viewModel.saveRecording()
-//                navigator.navigate(UploadScreenDestination) {
-//                    popUpTo(IdScreenDestination) {
-//                        inclusive = false
-//                    }
-//                }
-//            }) {
-//                Text(text = "Next")
-//            }
+            Button(onClick = {
+                viewModel.saveRecording()
+                navigator.navigate(UploadScreenDestination) {
+                    popUpTo(IdScreenDestination) {
+                        inclusive = false
+                    }
+                }
+            }) {
+                Text(text = "Next")
+            }
         }
 
         Image(

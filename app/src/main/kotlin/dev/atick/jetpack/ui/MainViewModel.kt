@@ -168,13 +168,10 @@ class MainViewModel @Inject constructor(
             _smartCareUiState.update { state ->
                 state.copy(smartCareState = SmartCareState.Disconnected)
             }
-            if (recording.size > 0) {
-                recording.clear()
-                _smartCareUiState.update { state ->
-                    state.copy(
-                        smartCareState = SmartCareState.RecordingComplete
-                    )
-                }
+            _smartCareUiState.update { state ->
+                state.copy(
+                    smartCareState = SmartCareState.RecordingComplete
+                )
             }
         }
     }
@@ -196,6 +193,7 @@ class MainViewModel @Inject constructor(
             val fos = FileOutputStream(myExternalFile)
             fos.write(csvData.toByteArray())
             fos.close()
+            recording.clear()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -209,7 +207,7 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                val success = hemaCareRepository.upload(idUiState.value.patientId)
+                val success = hemaCareRepository.upload()
                 if (success) {
                     _uploadUiState.update { state ->
                         state.copy(
