@@ -51,20 +51,20 @@ fun UploadScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                text = "Selected Images:\n${imageUris}\n\n" +
-                    "Selected Recording:\n${recordingUri}",
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+//            Text(
+//                text = "Selected Images:\n${imageUris}\n\n" +
+//                    "Selected Recording:\n${recordingUri}",
+//                color = MaterialTheme.colorScheme.onSurface
+//            )
+//
+//            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
-                    if (uploadUiState.uploadState == UploadState.Idle) {
-                        viewModel.upload()
-                    } else {
+                    if (uploadUiState.uploadState == UploadState.UploadComplete) {
                         navigator.navigate(IdScreenDestination)
+                    } else {
+                        viewModel.upload()
                     }
                 },
                 enabled = uploadUiState.uploadState != UploadState.Uploading
