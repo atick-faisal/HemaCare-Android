@@ -20,7 +20,6 @@ import dev.atick.jetpack.ui.smartcare.SmartCareUiState
 import dev.atick.jetpack.ui.upload.UploadState
 import dev.atick.jetpack.ui.upload.UploadUiState
 import dev.atick.jetpack.utils.toCsv
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -179,7 +178,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun saveRecording() {
+    fun saveRecording() {
         val timestamp = SimpleDateFormat("dd_M_yyyy_hh_mm_ss", Locale.US).format(Date())
         val csvData = recording.toCsv()
         val savePath =
@@ -209,11 +208,19 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                delay(3000L)
-                _uploadUiState.update { state ->
-                    state.copy(
-                        uploadState = UploadState.UploadComplete
-                    )
+                val success = hemaCareRepository.upload(idUiState.value.patientId)
+                if (success) {
+                    _uploadUiState.update { state ->
+                        state.copy(
+                            uploadState = UploadState.UploadComplete
+                        )
+                    }
+                } else {
+                    _uploadUiState.update { state ->
+                        state.copy(
+                            uploadState = UploadState.UploadFailed
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 _uploadUiState.update { state ->
@@ -226,7 +233,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getImageUris() = hemaCareRepository.getImageUris()
-    fun getRecordingUri() = hemaCareRepository.getRecordingUri()
+    fun getImageUris() = hemaCareRepository.getImageUrisAsString()
+    fun getRecordingUri() = hemaCareRepository.getRecordingUriAsString()
 
 }

@@ -4,11 +4,14 @@ import android.net.Uri
 
 interface HemaCareRepository {
 
-    fun getImageUris(): String
-    fun getRecordingUri(): String
+    val imageUris: List<Uri>
+    val recordingUri: Uri
+
+    fun getImageUrisAsString(): String
+    fun getRecordingUriAsString(): String
 
     fun setImageUris(imageUris: List<Uri>)
     fun setRecordingUri(recordingUri: Uri)
-    suspend fun upload()
+    suspend fun upload(id: String): Boolean
 
 }
