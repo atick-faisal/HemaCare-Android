@@ -42,7 +42,6 @@ fun ImageSelectionScreen(
     navigator: DestinationsNavigator,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-
     val imageSelectionUiState by viewModel.imageSelectionUiState.collectAsState()
 
     val context = LocalContext.current
@@ -50,7 +49,7 @@ fun ImageSelectionScreen(
 
 
     val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.PickMultipleVisualMedia(10)
+        ActivityResultContracts.PickMultipleVisualMedia(5)
     ) { uris ->
         viewModel.setSelectedImages(uris)
         uris.forEach { uri ->
