@@ -9,5 +9,6 @@ data class UploadUiState(
 sealed class UploadState(val description: String) {
     object Idle : UploadState("Upload")
     object Uploading : UploadState("Uploading  ... ")
+    object UploadFailed : UploadState("Upload Failed! Try Again?")
     object UploadComplete : UploadState("Done! Upload Another?")
 }

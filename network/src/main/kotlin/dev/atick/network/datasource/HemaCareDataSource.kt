@@ -1,3 +1,11 @@
 package dev.atick.network.datasource
 
-interface HemaCareDataSource
+import android.net.Uri
+
+interface HemaCareDataSource {
+    suspend fun upload(
+        id: String,
+        recordingUri: Uri,
+        vararg imageUris: Uri
+    ): Boolean
+}
