@@ -8,6 +8,10 @@ class HemaCareRepositoryImpl @Inject constructor(
     private val hemaCareDataSource: HemaCareDataSource
 ) : HemaCareRepository {
 
+    private lateinit var _patientId: String
+    override val patientId: String
+        get() = _patientId
+
     private val _imageUris = mutableListOf<Uri>()
     override val imageUris: List<Uri>
         get() = _imageUris
@@ -35,8 +39,11 @@ class HemaCareRepositoryImpl @Inject constructor(
         this._recordingUri = recordingUri
     }
 
-    override suspend fun upload(id: String): Boolean {
-        return hemaCareDataSource.upload(id, recordingUri, *imageUris.toTypedArray())
+    override suspend fun upload(): Boolean {
+        return hemaCareDataSource.upload(patientId, recordingUri, *imageUris.toTypedArray())
     }
 
+    override fun setPatientId(id: String) {
+        _patientId = id
+    }
 }
