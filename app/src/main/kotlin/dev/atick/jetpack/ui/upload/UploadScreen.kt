@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +32,9 @@ fun UploadScreen(
 
     val uploadUiState by viewModel.uploadUiState.collectAsState()
 
+    val imageUris = remember { viewModel.getImageUris() }
+    val recordingUri = remember { viewModel.getRecordingUri() }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -48,8 +52,8 @@ fun UploadScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "${uploadUiState.nSelectedImages} Images Selected," +
-                    " ${uploadUiState.nRecordedFiles} Data Recorded",
+                text = "Selected Images:\n${imageUris}\n\n" +
+                    "Selected Recording:\n${recordingUri}",
                 color = MaterialTheme.colorScheme.onSurface
             )
 

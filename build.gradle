@@ -4,12 +4,14 @@ buildscript {
         // X = Major Update
         // Y = Minor Update
         // Z = Patch / Fix
-        version_name = "1.0.0"
-        version_code = 1
+        version_name = "1.1.0"
+        version_code = 5
 
         // ... Project
         agp_version = "7.3.1"
         kotlin_version = "1.7.20"
+        google_services_version = "4.3.14"
+        crashlytics_version = "2.9.2"
 
         // ... Core
         core_ktx_version = "1.9.0"
@@ -32,10 +34,16 @@ buildscript {
         lottie_version = "5.2.0"
         hilt_version = "2.44.2"
         splash_screen_version = "1.0.0"
+        analytics_version = "31.1.0"
 
         // ... SDK Config
         min_sdk_version = 26
         compile_sdk_version = 33
+    }
+
+    dependencies {
+        classpath("com.google.gms:google-services:$google_services_version")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:$crashlytics_version")
     }
 }
 

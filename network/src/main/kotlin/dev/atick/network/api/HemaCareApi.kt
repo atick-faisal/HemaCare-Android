@@ -1,6 +1,6 @@
 package dev.atick.network.api
 
-interface JetpackApi {
+interface HemaCareApi {
     companion object {
         const val BASE_URL = "https://atick.dev/"
     }

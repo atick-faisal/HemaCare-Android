@@ -66,7 +66,7 @@ fun SmartCareScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "90.0",
+                    text = "${smartCareUiState.heartRate}",
                     fontSize = 80.sp,
                     fontWeight = FontWeight.Thin,
                     color = MaterialTheme.colorScheme.onSurface
@@ -102,25 +102,36 @@ fun SmartCareScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-//            Button(onClick = { viewModel.toggleConnection() }) {
-//                Text(
-//                    text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
-//                        "Next"
-//                    else if (smartCareUiState.smartCareState != SmartCareState.Disconnected)
-//                        "Cancel"
-//                    else "Record"
-//                )
-//            }
-
             Button(onClick = {
-                navigator.navigate(UploadScreenDestination) {
-                    popUpTo(IdScreenDestination) {
-                        inclusive = false
+                if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete) {
+                    navigator.navigate(UploadScreenDestination) {
+                        popUpTo(IdScreenDestination) {
+                            inclusive = false
+                        }
                     }
+                } else {
+                    viewModel.toggleConnection()
                 }
             }) {
-                Text(text = "Next")
+                Text(
+                    text = if (smartCareUiState.smartCareState == SmartCareState.RecordingComplete)
+                        "Next"
+                    else if (smartCareUiState.smartCareState != SmartCareState.Disconnected)
+                        "Cancel"
+                    else "Record"
+                )
             }
+
+//            Button(onClick = {
+//                viewModel.saveRecording()
+//                navigator.navigate(UploadScreenDestination) {
+//                    popUpTo(IdScreenDestination) {
+//                        inclusive = false
+//                    }
+//                }
+//            }) {
+//                Text(text = "Next")
+//            }
         }
 
         Image(

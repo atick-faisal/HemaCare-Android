@@ -1,3 +1,3 @@
 package dev.atick.network.datasource
 
-interface JetpackDataSource
+interface HemaCareDataSource

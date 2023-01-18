@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.os.Looper
+import androidx.core.net.toUri
 import androidx.core.os.HandlerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.smartcare.oximetry.library.ConnectionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.atick.jetpack.data.OxiMeterData
+import dev.atick.jetpack.repository.HemaCareRepository
 import dev.atick.jetpack.ui.id.IdUiState
 import dev.atick.jetpack.ui.images.ImageSelectionUiState
 import dev.atick.jetpack.ui.smartcare.SmartCareState
@@ -36,7 +38,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val executor: ThreadPoolExecutor
+    private val executor: ThreadPoolExecutor,
+    private val hemaCareRepository: HemaCareRepository
 ) : ViewModel() {
 
     init {
@@ -44,9 +47,9 @@ class MainViewModel @Inject constructor(
     }
 
     companion object {
-        private const val RECORDING_DURATION = 3 // MINUTES
+        private const val RECORDING_DURATION = 30 // SECONDS
         private const val SAMPLING_RATE = 100
-        private const val N_DATA_POINTS = RECORDING_DURATION * 60 * SAMPLING_RATE
+        private const val N_DATA_POINTS = RECORDING_DURATION * SAMPLING_RATE
     }
 
     private val _idUiState = MutableStateFlow(IdUiState())
@@ -89,12 +92,7 @@ class MainViewModel @Inject constructor(
 
         if (recording.size > N_DATA_POINTS) {
             saveRecording()
-            recording.clear()
-            _smartCareUiState.update { state ->
-                state.copy(
-                    smartCareState = SmartCareState.RecordingComplete
-                )
-            }
+            disconnect()
         }
 
         _smartCareUiState.update { state ->
@@ -116,15 +114,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun setSelectedImages(imageUris: List<Uri>) {
+        hemaCareRepository.setImageUris(imageUris)
         _imageSelectionUiState.update { state ->
             state.copy(
                 imageUris = imageUris
-            )
-        }
-
-        _uploadUiState.update { state ->
-            state.copy(
-                nSelectedImages = imageUris.size
             )
         }
     }
@@ -175,6 +168,14 @@ class MainViewModel @Inject constructor(
             _smartCareUiState.update { state ->
                 state.copy(smartCareState = SmartCareState.Disconnected)
             }
+            if (recording.size > 0) {
+                recording.clear()
+                _smartCareUiState.update { state ->
+                    state.copy(
+                        smartCareState = SmartCareState.RecordingComplete
+                    )
+                }
+            }
         }
     }
 
@@ -188,6 +189,8 @@ class MainViewModel @Inject constructor(
             savePath,
             "${timestamp}.csv"
         )
+
+        hemaCareRepository.setRecordingUri(myExternalFile.toUri())
 
         try {
             val fos = FileOutputStream(myExternalFile)
@@ -222,5 +225,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun getImageUris() = hemaCareRepository.getImageUris()
+    fun getRecordingUri() = hemaCareRepository.getRecordingUri()
 
 }

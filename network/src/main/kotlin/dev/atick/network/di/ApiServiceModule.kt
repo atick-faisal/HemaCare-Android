@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.atick.network.api.JetpackApi
+import dev.atick.network.api.HemaCareApi
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 object ApiServiceModule {
     @Singleton
     @Provides
-    fun provideJetpackApi(retrofit: Retrofit): JetpackApi {
-        return retrofit.create(JetpackApi::class.java)
+    fun provideJetpackApi(retrofit: Retrofit): HemaCareApi {
+        return retrofit.create(HemaCareApi::class.java)
     }
 }
