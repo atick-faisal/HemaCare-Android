@@ -32,8 +32,8 @@ fun UploadScreen(
 
     val uploadUiState by viewModel.uploadUiState.collectAsState()
 
-    val imageUris = remember { viewModel.getImageUris() }
-    val recordingUri = remember { viewModel.getRecordingUri() }
+//    val imageUris = remember { viewModel.getImageUris() }
+//    val recordingUri = remember { viewModel.getRecordingUri() }
 
     Box(
         Modifier

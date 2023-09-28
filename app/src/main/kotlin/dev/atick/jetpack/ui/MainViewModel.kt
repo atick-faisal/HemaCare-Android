@@ -184,7 +184,7 @@ class MainViewModel @Inject constructor(
         Files.createDirectories(savePath.toPath())
         val myExternalFile = File(
             savePath,
-            "${timestamp}.csv"
+            "${hemaCareRepository.patientId}_${timestamp}.csv"
         )
 
         hemaCareRepository.setRecordingUri(myExternalFile.toUri())

@@ -7,10 +7,10 @@ import retrofit2.http.Part
 
 interface HemaCareApi {
     companion object {
-        const val BASE_URL = "http://34.133.239.54/"
+        const val BASE_URL = "http://hemacare.qu-mlg.com/"
     }
 
-    @POST("/api/smart_care/store_patient_read")
+    @POST("/hemaApi")
     @Multipart
     suspend fun upload(
         @Part id: MultipartBody.Part,
