@@ -46,7 +46,7 @@ class MainViewModel @Inject constructor(
     }
 
     companion object {
-        private const val RECORDING_DURATION = 30 // SECONDS
+        private const val RECORDING_DURATION = 120 // SECONDS
         private const val SAMPLING_RATE = 100
         private const val N_DATA_POINTS = RECORDING_DURATION * SAMPLING_RATE
     }

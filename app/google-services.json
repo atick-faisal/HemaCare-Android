@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "67671347780",
-    "project_id": "hemacare-android",
-    "storage_bucket": "hemacare-android.appspot.com"
+    "project_number": "1052755869243",
+    "project_id": "jetpack-android-bcf89",
+    "storage_bucket": "jetpack-android-bcf89.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:67671347780:android:5d8ff075fed52ef7f5e211",
+        "mobilesdk_app_id": "1:1052755869243:android:12eed178210da563b4e61e",
         "android_client_info": {
           "package_name": "dev.atick.hema.care"
         }
       },
       "oauth_client": [
         {
-          "client_id": "67671347780-fphbvjhoosjfe3qad1ecgcn8u4ase0bf.apps.googleusercontent.com",
+          "client_id": "1052755869243-tb3s2g60ct3fji814vq59ht295946ai2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAKl_jkztQQAmb4zc3jHSAfjiJplWUOARk"
+          "current_key": "AIzaSyADZpwi35g_GRxHtYfMx2XHZoE3uBVD7XA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "67671347780-fphbvjhoosjfe3qad1ecgcn8u4ase0bf.apps.googleusercontent.com",
+              "client_id": "1052755869243-33s1pgh2jvtu7qso1pv6taf0s7napb8i.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
